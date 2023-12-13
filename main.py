@@ -42,7 +42,7 @@ for index in range(len(pots)):
 
     # Loop draft pots
     pot_players = pots[index]
-
+        
     # Set managers to manage
     managers_to_manage = []
     for index in range(managers_number):
@@ -67,14 +67,21 @@ for index in range(len(pots)):
 
             # Set player and manager to not manage during the current pot
             pot_players_to_delete.append(position)
-            del managers_to_manage[blocked_manager]
+            
+            # Remove managers already managed
+            for index in managers_to_manage:
+                temp_manager = managers[index]
+                if (temp_manager.name == pot_manager.name):
+                    managers_to_manage.remove(index)
+                    break
+
             print(row_separator_small + " Assign player " + pot_player.name + " to " + pot_manager.name + " for " + str(pot_player.price))
         
         # Go next pot player
         position = position + 1
 
     # Remove blocked player (already managed) from pot
-    for index in pot_players_to_delete:
+    for index in sorted(pot_players_to_delete, reverse=True):
         del pot_players[index]
 
     # Loop managers to manage
